@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 const Recommends = () => {
   const [recommends, setRecommends] = useState([])
-  console.log(recommends)
   
   useEffect( () => {
     fetch('menu.json')
