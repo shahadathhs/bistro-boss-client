@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import useAuth from '../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 
 const Login = () => {
   const { login, googleLogin } = useAuth();
-  const captchaRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
 
   // navigation systems
@@ -44,6 +43,29 @@ const Login = () => {
     loadCaptchaEnginge(6); 
   },[])
 
+  const handleCaptcha = (e) => {
+    e.preventDefault()
+    const user_captcha_value = e.target.value;
+    if (validateCaptcha(user_captcha_value)) {
+      setDisabled(false)
+      Swal.fire({
+        title: 'Successful!',
+        text: 'Captcha Matched',
+        icon: 'success',
+        confirmButtonText: 'Cool'
+      })
+    }
+    else {
+      setDisabled(true)
+      // Swal.fire({
+      //   title: 'Error!',
+      //   text: 'Captcha did not match!',
+      //   icon: 'error',
+      //   confirmButtonText: 'Try Again'
+      // })
+    }
+  }
+
   const handleLogin = event => {
     event.preventDefault();
 
@@ -76,16 +98,6 @@ const Login = () => {
         })
         console.log(error)
       })
-  }
-
-  const handleCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
-    if (validateCaptcha(user_captcha_value)) {
-      setDisabled(false)
-    }
-    else {
-      setDisabled(true)
-    }
   }
 
   return (
@@ -136,8 +148,8 @@ const Login = () => {
               <label className="label">
               <LoadCanvasTemplate />
               </label>
-              <input ref={captchaRef} type="text" name="captcha" placeholder="Type the Captcha" className="input input-bordered" required />
-              <button onClick={handleCaptcha} className='btn btn-outline btn-xs mt-2'>Check</button>
+              <input onBlur={handleCaptcha} type="text" name="captcha" placeholder="Type the Captcha" className="input input-bordered" required />
+              {/* <button className='btn btn-outline btn-xs mt-2'>Check</button> */}
             </div>
             
             <div className="form-control mt-6">

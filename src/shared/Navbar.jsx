@@ -155,9 +155,9 @@ const Navbar = () => {
               <NavLink 
               className={({ isActive }) => isActive 
               ? 
-              'btn btn-outline btn-sm shadow-lg text-indigo-600' 
+              'btn btn-outline text-yellow-600 btn-sm' 
               : 
-              'btn btn-outline btn-sm shadow-lg'
+              'btn btn-outline text-yellow-600 btn-sm border-0'
               }
               to="/login">Login</NavLink>
             </div>
