@@ -6,6 +6,9 @@ import 'react-tabs/style/react-tabs.css';
 import { useState } from "react";
 import useMenu from './../hooks/useMenu';
 import { Link, useParams } from "react-router-dom";
+import useAuth from './../hooks/useAuth';
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const Order = () => {
   const categories = [ 'offered', 'dessert', 'pizza', 'salad', 'soup', 'drinks']
@@ -20,6 +23,36 @@ const Order = () => {
   const saladMenu = menu.filter(item => item.category === 'salad')
   const soupMenu = menu.filter(item => item.category === 'soup')
   const drinksMenu = menu.filter(item => item.category === 'drinks')
+
+  const {user} = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const handleAddToCart = (addedItem) => {
+    const cartItem = {
+      oldId : addedItem._id,
+      ownerEmail : user.email,
+      name : addedItem.name,
+      prize : addedItem.price,
+      image : addedItem.image,
+      category : addedItem.category,
+      recipe : addedItem.recipe
+    }
+    console.table(cartItem)
+    axiosSecure.post('/carts', cartItem)
+    .then(res => {
+
+      console.log(res.data)
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${addedItem.name} added to your Cart`,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    })
+  }
 
   return (
     <div>
@@ -49,7 +82,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                        <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
@@ -57,6 +91,7 @@ const Order = () => {
               }
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {
@@ -67,7 +102,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                      <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
@@ -75,6 +111,7 @@ const Order = () => {
               }
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {
@@ -85,7 +122,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                      <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
@@ -93,6 +131,7 @@ const Order = () => {
               }
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {
@@ -103,7 +142,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                      <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
@@ -111,6 +151,7 @@ const Order = () => {
               }
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {
@@ -121,7 +162,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                      <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
@@ -129,6 +171,7 @@ const Order = () => {
               }
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {
@@ -139,7 +182,8 @@ const Order = () => {
                       <h2 className="card-title justify-center">{item.name}!</h2>
                       <p>{item.recipe}.</p>
                       <div className="card-actions justify-center">
-                        <Link className="btn btn-primary">Add to Cart</Link>
+                      <Link onClick={() => handleAddToCart(item)}
+                        className="btn btn-primary">Add to Cart</Link>
                       </div>
                     </div>
                   </div>
