@@ -9,6 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import useAuth from './../hooks/useAuth';
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useCart from "../hooks/useCart";
 
 const Order = () => {
   const categories = [ 'offered', 'dessert', 'pizza', 'salad', 'soup', 'drinks']
@@ -26,6 +27,7 @@ const Order = () => {
 
   const {user} = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [,refetch] = useCart()
 
   const handleAddToCart = (addedItem) => {
     const cartItem = {
@@ -37,11 +39,8 @@ const Order = () => {
       category : addedItem.category,
       recipe : addedItem.recipe
     }
-    console.table(cartItem)
     axiosSecure.post('/carts', cartItem)
     .then(res => {
-
-      console.log(res.data)
       if (res.data.insertedId) {
         Swal.fire({
           position: "top-end",
@@ -50,6 +49,8 @@ const Order = () => {
           showConfirmButton: false,
           timer: 1500
         });
+        // refetch the cart to update cart items count
+        refetch()
       }
     })
   }

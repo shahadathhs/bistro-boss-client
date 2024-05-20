@@ -2,8 +2,10 @@ import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from './../hooks/useAuth';
 import { ImCart } from "react-icons/im";
+import useCart from "../hooks/useCart";
 
 const Navbar = () => {
+  const [carts] = useCart()
   // authentication
   const { user, logOut } = useAuth();
   
@@ -60,13 +62,13 @@ const Navbar = () => {
         >Our Menu</NavLink>
       </li>
       <li>
-        <NavLink to="/menu" 
+        <NavLink to="/carts" 
         className={({ isActive }) => isActive
         ?"btn btn-outline text-yellow-600 btn-sm mr-2"
         :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
         >
           <ImCart />
-          <div className="badge badge-secondary">+0</div>
+          <div className="badge badge-secondary">{carts.length}</div>
         </NavLink>
       </li>
     </>
