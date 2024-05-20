@@ -62,7 +62,7 @@ const Navbar = () => {
         >Our Menu</NavLink>
       </li>
       <li>
-        <NavLink to="/carts" 
+        <NavLink to="/dashboard/carts" 
         className={({ isActive }) => isActive
         ?"btn btn-outline text-yellow-600 btn-sm mr-2"
         :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
