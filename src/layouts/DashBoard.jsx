@@ -9,6 +9,7 @@ import useCart from "../hooks/useCart";
 
 const DashBoard = () => {
   const [carts] = useCart()
+  
   return (
     <div className="flex">
       <div className="w-72 min-h-screen bg-gray-100">
