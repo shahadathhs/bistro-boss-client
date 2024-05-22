@@ -1,8 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
+import { Helmet } from "react-helmet-async";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const Register = () => {
+  const axiosPublic = useAxiosPublic();
   const { createUser, updateUserProfile, logOut } = useAuth();
 
   // navigation systems
@@ -19,22 +22,38 @@ const Register = () => {
     const photo = form.photo.value;
     const email = form.email.value;
     const password = form.password.value;
+
+    const userInfo = { name, email}
       
     //create user and update profile
     createUser(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        logOut();
-        Swal.fire({
-          title: 'Successful!',
-          text: 'New user successfully created. Now you can login!',
-          icon: 'success',
-          confirmButtonText: 'Cool'
-        })
+        // logOut();
+        // Swal.fire({
+        //   title: 'Successful!',
+        //   text: 'New user successfully created. Now you can login!',
+        //   icon: 'success',
+        //   confirmButtonText: 'Cool'
+        // })
         updateUserProfile(name, photo)
           .then(() => {
             navigate(from);
+            // create user in database
+            axiosPublic.post("/users", userInfo)
+            .then(res => {
+              console.log(res.data)
+              if(res.data.insertedId){
+                logOut();
+                Swal.fire({
+                  title: 'Successful!',
+                  text: 'New user successfully created. Now you can login!',
+                  icon: 'success',
+                  confirmButtonText: 'Cool'
+                })
+              }
+            })
           });
       })
       .catch((error) => {
@@ -53,6 +72,9 @@ const Register = () => {
 
   return (
       <div>
+        <Helmet>
+          Register | Bistro Boss
+        </Helmet>
         <div className="hero mx-auto container">
           <div className="hero-content flex-col lg:flex-row gap-10">
             {/* Register form */}

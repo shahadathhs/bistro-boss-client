@@ -26,7 +26,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "/order/:category",
-        //element: <Order />,
         element: <PrivateRoutes><Order /> </PrivateRoutes>,
       },
       {
@@ -41,7 +40,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashBoard />,
+    element: <PrivateRoutes><DashBoard /> </PrivateRoutes>,
     errorElement: <ErrorPage />,
     children: [
       {
