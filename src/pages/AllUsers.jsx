@@ -41,8 +41,34 @@ const AllUsers = () => {
     });
   }
 
-  const handleRole = user => {
+  const handleMakeAdmin = user => {
     console.log(user)
+    Swal.fire({
+      title: "Are you sure?",
+      text: `${user.name} will be an admin!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Make Admin!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/users/admin/${user._id}`)
+        .then(res=> {
+          console.log(res.data)
+          if (res.data.modifiedCount > 0) {
+            refetch();
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: `${user.name} is an admin now!`,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        })
+      }
+    });
   }
 
   return (
@@ -77,8 +103,13 @@ const AllUsers = () => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>
-                          <button onClick={() => handleRole(user)}
-                          className="btn btn-outline text-blue-400"><FaUsers /></button>
+                          {
+                            user.role === 'admin'
+                            ?
+                            "ADMIN"
+                            :
+                            <button onClick={() => handleMakeAdmin(user)}
+                          className="btn btn-outline text-blue-400"><FaUsers /></button>}
                         </td>
                         <td>
                           <button onClick={() => handleDelete(user)}
