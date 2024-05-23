@@ -8,11 +8,12 @@ import { IoFastFoodOutline } from "react-icons/io5";
 import useCart from "../hooks/useCart";
 import { FaItunes, FaList } from "react-icons/fa";
 import { FaBookAtlas, FaUser } from "react-icons/fa6";
+import useAdmin from "../hooks/useAdmin";
 
 const DashBoard = () => {
   const [carts] = useCart()
 
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   
   return (
     <div className="flex">
