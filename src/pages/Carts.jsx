@@ -39,7 +39,7 @@ const Carts = () => {
   return (
     <div>
       <Helmet>
-        Carts | Bistro Boss
+        <title>Carts | Bistro Boss</title>
       </Helmet>
       <div className="min-h-screen p-4 m-4 border-2">
         <div className="flex gap-3 items-center justify-center">

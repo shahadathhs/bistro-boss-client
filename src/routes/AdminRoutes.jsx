@@ -4,7 +4,7 @@ import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 
 const AdminRoutes = ({children}) => {
-  const [user, loading] = useAuth()
+  const {user, loading} = useAuth()
   const [isAdmin, isAdminLoading] = useAdmin()
   
   const location = useLocation();
@@ -26,7 +26,7 @@ const AdminRoutes = ({children}) => {
   if (user && isAdmin) {
     return children;
   } 
-  return <Navigate state={location.pathname} to="/login"></Navigate>;
+  return <Navigate state={location.pathname} to="/"></Navigate>;
 };
 
 export default AdminRoutes;
