@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { FcHome } from "react-icons/fc";
 import { BsCalendar4Range, BsBookmarkPlus } from "react-icons/bs";
 import { GoCodeReview } from "react-icons/go";
-import { MdRestaurantMenu } from "react-icons/md";
+import { MdOutlinePayments, MdRestaurantMenu } from "react-icons/md";
 import { IoFastFoodOutline } from "react-icons/io5";
 import useCart from "../hooks/useCart";
 import { FaItunes, FaList } from "react-icons/fa";
@@ -66,6 +66,14 @@ const DashBoard = () => {
             </>
             :
             <>
+              <li>
+                <NavLink 
+                className={({ isActive }) => isActive
+                ?"btn btn-outline text-yellow-600 btn-sm mr-2"
+                :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
+                to="/dashboard/payment"><MdOutlinePayments /> Payment</NavLink>
+              </li>
+
               <li>
                 <NavLink 
                 className={({ isActive }) => isActive

@@ -3,6 +3,7 @@ import useCart from './../hooks/useCart';
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from './../hooks/useAxiosSecure';
+import { Link } from "react-router-dom";
 
 const Carts = () => {
   const axiosSecure = useAxiosSecure();
@@ -45,7 +46,15 @@ const Carts = () => {
         <div className="flex gap-3 items-center justify-center">
           <h2>Items: {carts.length}</h2>
           <h2>Total Prize: {totalPrice}</h2>
-          <button className="btn btn-outline">Pay</button>
+          {
+            carts.length
+            ?
+            <Link to="/dashboard/payment" >
+              <button className="btn btn-outline">Pay</button> 
+            </Link>
+            :
+            <button className="btn btn-outline" disabled>Pay</button>
+          }
         </div>
         <div>
         <div className="overflow-x-auto">
