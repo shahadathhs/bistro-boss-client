@@ -13,6 +13,9 @@ import AllUsers from "../pages/AllUsers";
 import AddItems from "../pages/AddItems";
 import AdminRoutes from './AdminRoutes';
 import ManageItems from "../pages/ManageItems";
+import UpdateMenu from "../pages/UpdateMenu";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +67,11 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/manageItems",
         element: <AdminRoutes> <ManageItems /> </AdminRoutes>,
+      },
+      {
+        path: "/dashboard/updateItem/:id",
+        element: <AdminRoutes> <UpdateMenu /> </AdminRoutes>,
+        loader: ({params}) => fetch(`${import.meta.env.VITE_API_URL}/menu/${params.id}`)
       },
     ]
   }

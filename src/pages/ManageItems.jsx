@@ -4,14 +4,11 @@ import useMenu from './../hooks/useMenu';
 import { GrUpdate } from "react-icons/gr";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const ManageItems = () => {
   const [menu, , refetch] = useMenu();
   const axiosSecure = useAxiosSecure();
-
-  const handleManage = item => {
-    console.log(item)
-  }
 
   const handleDelete = (item) => {
     Swal.fire({
@@ -83,13 +80,13 @@ const ManageItems = () => {
                     </td>
                     
                     <th>
-                      <button className="btn btn-ghost btn-xs">{item.prize} $</button>
+                      <button className="btn btn-ghost btn-xs">{item.price} $</button>
                     </th>
 
                     <th>
-                      <button onClick={() => handleManage(item)} className="btn btn-outline text-blue-500">
+                      <Link to={`/dashboard/updateItem/${item._id}`} className="btn btn-outline text-blue-500">
                         <GrUpdate /> Update
-                      </button>
+                      </Link>
                     </th>
 
                     <th>
