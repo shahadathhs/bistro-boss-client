@@ -49,6 +49,7 @@ const useAxiosSecure = () => {
     }, function (error) {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
+      console.log(error)
       const status = error.response.status
       //console.log('error tracked in the interceptor', error.response , status)
             if (status === 401 || status === 403) {

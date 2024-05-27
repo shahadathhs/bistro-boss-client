@@ -9,15 +9,30 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  //const [clientSecret, setClientSecret] = useState("");
-  const [carts, refetch] = useCart();
-  const totalPrice = carts.reduce((sum, item) => sum + parseFloat(item.prize) ,0);
+  const [clientSecret, setClientSecret] = useState("");
+  const [carts] = useCart();
 
   useEffect(() => {
-    axiosSecure.post("/create-payment-intent", {
-
-    })
-  }, [axiosSecure]);
+    const totalPrice = carts.reduce((sum, item) => sum + parseInt(item.prize) ,0);
+    console.log(totalPrice)
+    // axiosSecure.post("/create-payment-intent", {price: totalPrice})
+    //   .then(res => {
+    //     console.log(res.data.clientSecret)
+    //     setClientSecret(res.data.clientSecret)
+    //   });
+    if (totalPrice > 0) { // Ensure totalPrice is a valid number greater than 0
+      axiosSecure.post("/create-payment-intent", { price: totalPrice })
+        .then(res => {
+          console.log("Client Secret:", res.data.clientSecret);
+          setClientSecret(res.data.clientSecret);
+        })
+        .catch(error => {
+          console.error('Error creating payment intent:', error);
+        });
+    } else {
+      console.error('Invalid totalPrice:', totalPrice);
+    }
+  }, [axiosSecure, carts]);
 
   const handleSubmit = async (event) => {
     // Block native form submission.
@@ -71,7 +86,7 @@ const CheckoutForm = () => {
           },
         }}
       />
-      <button type="submit" disabled={!stripe} className="btn btn-outline btn-sm">
+      <button type="submit" disabled={!stripe || !clientSecret} className="btn btn-outline btn-sm">
         Pay
       </button>
       { error && <p className="text-red-500">{error}</p>}
