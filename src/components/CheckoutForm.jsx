@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useCart from "../hooks/useCart";
 import useAuth from "../hooks/useAuth";
+import moment from "moment";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
   const [error, setError] = useState('');
@@ -10,9 +13,10 @@ const CheckoutForm = () => {
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState('');
-  const [carts] = useCart();
+  const [carts, refetch] = useCart();
   const totalPrice = carts.reduce((sum, item) => sum + parseFloat(item.prize), 0);
   console.log(totalPrice)
 
@@ -78,6 +82,35 @@ const CheckoutForm = () => {
       if (paymentIntent.status === 'succeeded') {
         console.log("Transaction Id", paymentIntent.id)
         setTransactionId(paymentIntent.id)
+        // Get current UTC date
+        const currentUTCDate = moment.utc();
+        // Convert and format the date
+        const formattedDate = currentUTCDate.format('YYYY-MM-DD HH:mm:ss');
+
+        // now save the payment to database
+        const payment = {
+          name: user.displayName,
+          email: user.email,
+          transactionId: paymentIntent.id,
+          price: totalPrice,
+          data: formattedDate,
+          cartIds: carts.map(item => item._id),
+          menuIds: carts.map(item => item.oldId),
+          status: 'pending'
+        }
+
+        const res = await axiosSecure.post('/payments', payment);
+        console.log("payment saved",res.data)
+        refetch()
+        if (res.data.paymentResult.insertedId) {
+          Swal.fire({
+            icon: "success",
+            title: "Your payment completed",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          navigate('/dashboard/paymentHistory')
+        }
       }
     }
   };
