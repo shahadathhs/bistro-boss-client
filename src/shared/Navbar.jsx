@@ -1,13 +1,25 @@
-import { NavLink } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from './../hooks/useAuth';
 import { MdDashboardCustomize } from "react-icons/md";
-//import useCart from "../hooks/useCart";
+import useAdmin from './../hooks/useAdmin';
+//import { useEffect } from "react";
 
 const Navbar = () => {
-  //const [carts] = useCart()
-  // authentication
+  //const [isAdmin, isAdminLoading] = useAdmin();
+  const [isAdmin] = useAdmin();
   const { user, logOut } = useAuth();
+  //const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!isAdminLoading && user) {
+  //     if (isAdmin) {
+  //       navigate('/dashboard/adminHome');
+  //     } else {
+  //       navigate('/dashboard/userHome');
+  //     }
+  //   }
+  // }, [isAdmin, isAdminLoading, user, navigate]);
   
   const handleLogout = () =>{
     Swal.fire({
@@ -47,6 +59,7 @@ const Navbar = () => {
         :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
         >Home</NavLink>
       </li>
+      
       <li>
         <NavLink to="/order/salad" 
         className={({ isActive }) => isActive
@@ -54,6 +67,7 @@ const Navbar = () => {
         :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
         >Order</NavLink>
       </li>
+      
       <li>
         <NavLink to="/menu" 
         className={({ isActive }) => isActive
@@ -61,16 +75,22 @@ const Navbar = () => {
         :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
         >Our Menu</NavLink>
       </li>
-      <li>
-        <NavLink to="/dashboard" 
-        className={({ isActive }) => isActive
-        ?"btn btn-outline text-yellow-600 btn-sm mr-2"
-        :"btn btn-outline text-yellow-600 btn-sm border-0 mr-2"}
-        >
-          <MdDashboardCustomize />
-          <div className="badge badge-secondary">Go to Dashboard</div>
-        </NavLink>
-      </li>
+      {/* dashboard */}
+      {user && (
+        <li>
+          <NavLink
+            to={isAdmin ? "/dashboard/adminHome" : "/dashboard/userHome"}
+            className={({ isActive }) =>
+              isActive
+                ? "btn btn-outline text-yellow-600 btn-sm mr-2"
+                : "btn btn-outline text-yellow-600 btn-sm border-0 mr-2"
+            }
+          >
+            <MdDashboardCustomize />
+            <div className="badge badge-secondary">Dashboard</div>
+          </NavLink>
+        </li>
+      )}
     </>
 
   return (
